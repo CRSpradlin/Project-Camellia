@@ -1,0 +1,7 @@
+camellia_module:
+  db_server_dbhostname: 'drupal_db'
+  db_server_dbname: 'drupal'
+  db_server_dbuser: 'user'
+  db_server_dbpassword: 'password'
+  api_key: '2a1052QA6kHYC68nghMWrvje'
+  domain: 'fat-husky-100.loca.lt'

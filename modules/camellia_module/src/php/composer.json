@@ -1,0 +1,15 @@
+{
+    "name": "root/php",
+    "description": "intermediate packages for drupal module",
+    "type": "library",
+    "require": {
+        "symfony/yaml": "^5.1",
+        "ramsey/uuid": "^4.1"
+    },
+    "authors": [
+        {
+            "name": "Chris Spradlin",
+            "email": "mail@crspradlin.org"
+        }
+    ]
+}

@@ -1,0 +1,6 @@
+camellia_module:
+    path: /camellia_module/{route_method}/{route_param}
+    defaults:
+      _controller: Drupal\camellia_module\Controller\DefaultController::render
+    requirements:
+      _permission: 'access content'

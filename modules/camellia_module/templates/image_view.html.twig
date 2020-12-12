@@ -1,0 +1,47 @@
+{{ attach_library('camellia_module/library') }}
+<h1>Image Uploaded:</h1>
+<img src="/modules/custom/camellia_module/uploads/{{image_id}}" />
+<h1>List of Possible Names:</h1>
+<div id="plant-list"></div>
+<script>
+window.addEventListener('load', function () {
+  loadData();
+})
+let loadData = async () => {
+  let formData = new FormData();
+  formData.append("id", "{{image_id}}");
+  let submitReturn = await ajaxRequest("/modules/custom/camellia_module/src/php/public/get_json.php", "POST", formData);
+  console.log(submitReturn);
+
+  const plantList = document.getElementById('plant-list');
+
+  const ol = document.createElement("ol");
+  plantList.appendChild(ol);
+
+  const results = JSON.parse(submitReturn).results;
+  results.forEach(result => {
+    const li = document.createElement("li");
+
+    const h3 = document.createElement("h3");
+    const score = parseFloat(parseFloat(result.score)*100).toFixed(2)+"%";
+    h3.innerHTML = score + " change of being " + result.species.scientificNameWithoutAuthor;
+    li.appendChild(h3);
+
+    if(result.species.commonNames.length){
+      const commonNamesLabel = document.createElement("h3");
+      commonNamesLabel.innerHTML = "List of Common Names:"
+      li.appendChild(commonNamesLabel)
+      const commonNames = document.createElement("ul");
+      result.species.commonNames.forEach(name => {
+        const pName = document.createElement("p");
+        pName.innerHTML = name;
+        commonNames.appendChild(pName);
+      })
+      li.appendChild(commonNames);
+    }
+
+    ol.appendChild(li);
+  })
+
+}
+</script>

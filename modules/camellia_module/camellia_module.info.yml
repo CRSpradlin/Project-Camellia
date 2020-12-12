@@ -1,0 +1,6 @@
+name: Camellia Identification Module
+description: Module used to identify camellias via image uploads and recognition.
+package: Custom
+type: module
+version: 1.0
+core: 8.x

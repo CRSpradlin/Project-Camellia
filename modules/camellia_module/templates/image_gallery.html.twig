@@ -1,0 +1,68 @@
+{{ attach_library('camellia_module/library') }}
+
+<h1>Camellia Uploads</h1>
+<table id="tempImageTable">
+    <tr>
+        <th>Image</th>
+        <th>Name</th>
+    </tr>
+</table>
+
+<p id="php_result"></p>
+
+<script>
+
+window.addEventListener('load', function () {
+  loadData();
+})
+
+let loadData = async () => {
+    let submitReturn = await ajaxRequest("/modules/custom/camellia_module/src/php/public/get_all_json.php");
+    console.log(submitReturn);
+
+    var jsonElements = JSON.parse(submitReturn);
+
+    var url = "/modules/custom/camellia_module/uploads/";
+
+    var table = document.getElementById("tempImageTable");
+    for(i=0; i<jsonElements.length; i++)
+    {
+        var tableRow = document.createElement('tr');
+        var tableIdHead = document.createElement('td');
+        var image = document.createElement('img');
+        image.setAttribute("onclick", `window.location.href = '${'/camellia_module/view/'+jsonElements[i].id}'`);
+        var tableNameHead = document.createElement('td');
+        
+        image.setAttribute("class", "gallery_image");
+        image.setAttribute("src", url+jsonElements[i].id);
+        
+
+        tableNameHead.innerHTML = "NULL";
+
+        //Parse Image Json
+        //console.log(jsonElements[i].imageData);
+        
+        if(jsonElements[i].imageData.trim().length !== 0)
+        {
+            imageDataJsonString = jsonElements[i].imageData;
+            if(jsonElements[i].imageData.charAt(0) === '\"')
+            {
+                imageDataJsonString = imageDataJsonString.substring(1, imageDataJsonString.length-1);
+            }
+
+            var imageJson = JSON.parse(imageDataJsonString);
+            var flowerName = imageJson.results[0].species.scientificNameWithoutAuthor;
+            tableNameHead.innerHTML = flowerName;
+        }
+
+        tableIdHead.appendChild(image);
+        tableRow.appendChild(tableIdHead);
+        tableRow.appendChild(tableNameHead);
+
+        table.appendChild(tableRow);
+    }
+
+    table.scrollTo();
+}
+
+</script>

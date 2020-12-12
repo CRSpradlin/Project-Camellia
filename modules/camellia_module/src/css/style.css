@@ -1,0 +1,23 @@
+#uploader_img_conatainer {
+    width: 500px;
+    height: 500px;
+    padding: 10px;
+    border: 1px solid #808080;
+}
+
+#uploader_img_tag {
+    max-width: 500px;
+    max-height: 500px;
+    border: 1px solid #404040;
+}
+
+#uploader_import_btn {
+    width: 160px;
+    height: 32px;
+    margin-top: 10px;
+}
+
+.gallery_image {
+    max-width: 200px;
+    max-height: 200px;
+}

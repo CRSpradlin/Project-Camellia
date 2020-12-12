@@ -1,0 +1,9 @@
+library:
+  version: 1.x
+  uploads:
+    src/php/uploads/*: {}
+  css:
+    style.css:
+      src/css/style.css: {}
+  js:
+    src/js/script.js: {}

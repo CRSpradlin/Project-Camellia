@@ -1,0 +1,77 @@
+{{ attach_library('camellia_module/library') }}
+<div id="uploader_img_container" >
+    <img id="uploader_img_tag" src="" alt="" width="500" height="500">
+</div>
+<button id="uploader_import_btn" onclick="openFileExplorer(event)">Import</button>
+<select id="organ" name="organ">
+  <option value="flower">flower</option>
+  <option value="leaf">leaf</option>
+</select>
+<button id="submit" onclick="submitForm(event)">Submit</button>
+
+<form style="display:none;" name="form" onsubmit="submitForm(event)" enctype="multipart/form-data" >
+  Select image to upload:
+  <input type="file" name="file_to_upload" id="file_to_upload">
+  <input type="text" name="plant_part" id="plant_part">
+  <input type="submit" value="Upload Image" name="submit">
+</form>
+
+<script>
+let submitForm = async (e) => {
+  e.preventDefault();
+  let formData = new FormData();
+  formData.append("file_to_upload", document.getElementById("file_to_upload").files[0]);
+  let submitReturn = await ajaxRequest("/modules/custom/camellia_module/src/php/public/upload.php", "POST", formData);
+  console.log(submitReturn);
+  submitReturn = JSON.parse(`${submitReturn}`);
+
+  let plantnetFormData = new FormData();
+  plantnetFormData.append("imgId", `${submitReturn.image_id}`);
+  plantnetFormData.append("organ", document.getElementById("organ").value);
+  let jsonResponse = await ajaxRequest("/modules/custom/camellia_module/src/php/public/get_plantnet.php", "POST", plantnetFormData);
+  
+  console.log(jsonResponse)
+  console.log("blah blah blah")
+  console.log(JSON.parse(jsonResponse))
+
+  let second_formData = new FormData();
+  second_formData.append("json_results", jsonResponse);
+  second_formData.append("id", `${submitReturn.image_id}`);
+  let updateReturn = await ajaxRequest("/modules/custom/camellia_module/src/php/public/set_json.php", "POST", second_formData);
+  console.log(updateReturn);
+  window.location.href = `/camellia_module/view/${submitReturn.image_id}`;
+}
+
+
+function addImage(file)
+{
+    console.log('file name is ' + file.name);
+    var fileReader = new FileReader();
+    var img = document.getElementById("uploader_img_tag");
+    fileReader.onload = (
+        function(aImg)
+        {
+            return function(e){
+                img.setAttribute("src", e.target.result);
+            };
+        }
+    )(img);
+    fileReader.readAsDataURL(file);
+}
+
+function openFileExplorer()
+{
+    var input = document.createElement('input'); 
+    input.type = "file";
+    input.click();
+
+    input.onchange = (
+        function(e) {
+            var file = e.target.files[0];
+            document.getElementById('file_to_upload').files = e.target.files;
+            addImage(file);
+        }
+    );
+    return false;
+}
+</script>

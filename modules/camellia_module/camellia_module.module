@@ -1,0 +1,15 @@
+<?php
+function camellia_module_theme() {
+  $theme['uploader'] = [
+    'template' => 'uploader',
+    'variables' => ['api_key' => NULL, 'domain' => NULL,],
+  ];
+  $theme['image_view'] = [
+    'template' => 'image_view',
+    'variables' => ['image_id' => NULL,],
+  ];
+  $theme['image_gallery'] = [
+    'template' => 'image_gallery',
+  ];
+  return $theme;
+}
